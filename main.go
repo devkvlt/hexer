@@ -17,7 +17,10 @@ type hsl struct {
 }
 
 func rgb2hex(c rgb) string {
-	return fmt.Sprintf("#%.2x%.2x%.2x", int(c.r), int(c.g), int(c.b))
+	r := int(math.Round(c.r))
+	g := int(math.Round(c.g))
+	b := int(math.Round(c.b))
+	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
 }
 
 func hex2rgb(hex string) (rgb, error) {
