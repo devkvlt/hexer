@@ -29,22 +29,22 @@ func hex2rgb(hex string) (rgb, error) {
 	}
 	err := errors.New("invalid hex color")
 	if len(hex) != 6 {
-		return rgb{0, 0, 0}, err
+		return rgb{}, err
 	}
 	r, errR := strconv.ParseUint(hex[:2], 16, 64)
 	g, errG := strconv.ParseUint(hex[2:4], 16, 64)
 	b, errB := strconv.ParseUint(hex[4:6], 16, 64)
 	if len(hex) != 6 || errR != nil || errG != nil || errB != nil {
-		return rgb{0, 0, 0}, err
+		return rgb{}, err
 	}
 	return rgb{float64(r), float64(g), float64(b)}, nil
 }
 
 // https://en.wikipedia.org/wiki/HSL_and_HSV#General_approach
 func rgb2hsl(c rgb) hsl {
-	r := float64(c.r) / 255
-	g := float64(c.g) / 255
-	b := float64(c.b) / 255
+	r := c.r / 255
+	g := c.g / 255
+	b := c.b / 255
 	max := math.Max(r, math.Max(g, b))
 	min := math.Min(r, math.Min(g, b))
 	chroma := max - min
@@ -62,7 +62,7 @@ func rgb2hsl(c rgb) hsl {
 	if l == 1 || l == 0 {
 		s = 0
 	} else {
-		s = chroma / (1 - math.Abs(float64(2*l-1)))
+		s = chroma / (1 - math.Abs(2*l-1))
 	}
 	return hsl{h, s, l}
 }
@@ -72,14 +72,14 @@ func hsl2rgb(c hsl) rgb {
 	h := c.h
 	s := c.s
 	l := c.l
-	f := func(n int) float64 {
-		k := int(float64(n)+h/30) % 12
+	f := func(n float64) float64 {
+		k := int(n+h/30) % 12
 		a := s * math.Min(l, 1-l)
 		return l - a*math.Max(math.Min(float64(k-3), math.Min(float64(9-k), 1)), -1)
 	}
-	r := float64(math.Round(255 * f(0)))
-	g := float64(math.Round(255 * f(8)))
-	b := float64(math.Round(255 * f(4)))
+	r := math.Round(255 * f(0))
+	g := math.Round(255 * f(8))
+	b := math.Round(255 * f(4))
 	return rgb{r, g, b}
 }
 
@@ -115,8 +115,7 @@ func main() {
 	c2 := args[2]
 	w, err := strconv.ParseFloat(args[3], 64)
 	if err != nil {
-
-		fmt.Println("bad flag")
+		fmt.Println("bad weight")
 		os.Exit(1)
 	}
 	m, err := mix(c1, c2, w)
