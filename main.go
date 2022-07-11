@@ -69,11 +69,11 @@ func rgb2hsl(c rgb) hsl {
 	if chroma == 0 {
 		h = 0 // by convention
 	} else if max == r {
-		h = math.Mod((g-b)/chroma, 6) * 60
+		h = math.Mod((g-b)/chroma, 6)
 	} else if max == g {
-		h = ((b-r)/chroma + 2) * 60
+		h = (b-r)/chroma + 2
 	} else {
-		h = ((r-g)/chroma + 4) * 60
+		h = (r-g)/chroma + 4
 	}
 	l = (max + min) / 2
 	if l == 1 || l == 0 {
@@ -81,14 +81,17 @@ func rgb2hsl(c rgb) hsl {
 	} else {
 		s = chroma / (1 - math.Abs(2*l-1))
 	}
+	h = math.Round(60 * h)
+	s = math.Round(100 * s)
+	l = math.Round(100 * l)
 	return hsl{h, s, l}
 }
 
 // https://en.wikipedia.org/wiki/HSL_and_HSV#HSL_to_RGB_alternative
 func hsl2rgb(c hsl) rgb {
 	h := c.h
-	s := c.s
-	l := c.l
+	s := c.s / 100
+	l := c.l / 100
 	f := func(n float64) float64 {
 		k := math.Mod(n+h/30, 12)
 		a := s * min(l, 1-l)
