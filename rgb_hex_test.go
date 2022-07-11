@@ -18,7 +18,8 @@ func Test_hex2rgb(t *testing.T) {
 		{"test 3", "#FF68", rgb{0, 0, 0}, true},
 		{"test 4", "#FF684305", rgb{0, 0, 0}, true},
 		{"test 5", "FF6478", rgb{0, 0, 0}, true},
-		{"test 6", "", rgb{0, 0, 0}, true},
+		{"test 6", "#ZWF647", rgb{0, 0, 0}, true},
+		{"test 7", "", rgb{0, 0, 0}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -1,8 +1,8 @@
-name: test
+name: build
 on: [push, pull_request]
 jobs:
   build:
-    name: Test
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go
@@ -14,6 +14,6 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
-      - name: Test
+      - name: Build
         run: |
-          run: go test -v ./...
+          run: go build -v ./...
