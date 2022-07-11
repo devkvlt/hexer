@@ -8,7 +8,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: "1.16"
+          go-version: "1.18"
       - name: Check out code
         uses: actions/checkout@v2
       - name: Install dependencies
@@ -23,8 +23,3 @@ jobs:
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: goveralls -coverprofile=covprofile -service=github
-    # or use shogo82148/actions-goveralls
-    # - name: Send coverage
-    #   uses: shogo82148/actions-goveralls@v1
-    #   with:
-    #     path-to-profile: covprofile

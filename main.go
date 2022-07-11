@@ -69,7 +69,8 @@ func rgb2hsl(c rgb) hsl {
 	if chroma == 0 {
 		h = 0 // by convention
 	} else if max == r {
-		h = math.Mod((g-b)/chroma, 6)
+		// +6 to make sure the angle comes out positive
+		h = math.Mod((g-b)/chroma+6, 6)
 	} else if max == g {
 		h = (b-r)/chroma + 2
 	} else {
