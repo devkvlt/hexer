@@ -52,7 +52,7 @@ func rgb2hsl(c rgb) hsl {
 	if chroma == 0 {
 		h = 0 // by convention
 	} else if max == r {
-		h = float64(((int((g - b) / chroma)) % 6) * 60)
+		h = math.Mod((g-b)/chroma, 6) * 60
 	} else if max == g {
 		h = ((b-r)/chroma + 2) * 60
 	} else {
@@ -73,9 +73,9 @@ func hsl2rgb(c hsl) rgb {
 	s := c.s
 	l := c.l
 	f := func(n float64) float64 {
-		k := int(n+h/30) % 12
+		k := math.Mod(n+h/30, 12)
 		a := s * math.Min(l, 1-l)
-		return l - a*math.Max(math.Min(float64(k-3), math.Min(float64(9-k), 1)), -1)
+		return l - a*math.Max(math.Min(k-3, math.Min(9-k, 1)), -1)
 	}
 	r := math.Round(255 * f(0))
 	g := math.Round(255 * f(8))
