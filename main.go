@@ -16,6 +16,26 @@ type hsl struct {
 	h, s, l float64
 }
 
+func min(nums ...float64) float64 {
+	m := nums[0]
+	for _, v := range nums {
+		if m > v {
+			m = v
+		}
+	}
+	return float64(m)
+}
+
+func max(nums ...float64) float64 {
+	m := nums[0]
+	for _, v := range nums {
+		if m < v {
+			m = v
+		}
+	}
+	return float64(m)
+}
+
 func rgb2hex(c rgb) string {
 	r := int(math.Round(c.r))
 	g := int(math.Round(c.g))
@@ -45,8 +65,8 @@ func rgb2hsl(c rgb) hsl {
 	r := c.r / 255
 	g := c.g / 255
 	b := c.b / 255
-	max := math.Max(r, math.Max(g, b))
-	min := math.Min(r, math.Min(g, b))
+	max := max(r, g, b)
+	min := min(r, g, b)
 	chroma := max - min
 	var h, s, l float64
 	if chroma == 0 {
@@ -74,8 +94,8 @@ func hsl2rgb(c hsl) rgb {
 	l := c.l
 	f := func(n float64) float64 {
 		k := math.Mod(n+h/30, 12)
-		a := s * math.Min(l, 1-l)
-		return l - a*math.Max(math.Min(k-3, math.Min(9-k, 1)), -1)
+		a := s * min(l, 1-l)
+		return l - a*max(-1, min(k-3, 9-k, 1))
 	}
 	r := math.Round(255 * f(0))
 	g := math.Round(255 * f(8))
