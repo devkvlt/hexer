@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"strings"
 	"testing"
 )
@@ -31,22 +30,6 @@ func Test_mix(t *testing.T) {
 			}
 		})
 	}
-}
-
-func sameHEX(c1, c2 string) bool {
-	rgb1, err1 := hex2rgb(c1)
-	rgb2, err2 := hex2rgb(c2)
-	if err1 != nil || err2 != nil {
-		return false
-	}
-	dr := math.Abs(rgb1.r - rgb2.r)
-	dg := math.Abs(rgb1.g - rgb2.g)
-	db := math.Abs(rgb1.b - rgb2.b)
-	d := math.Sqrt(dr*dr + dg*dg + db*db)
-	return d < 2.5
-	// 2.5 is actually unnoticeable
-	// TODO: add minD param to sameRGB func and reuse here
-
 }
 
 func Test_lighten(t *testing.T) {

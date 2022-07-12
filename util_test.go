@@ -1,8 +1,10 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestMin(t *testing.T) {
+func Test_min(t *testing.T) {
 	tests := []struct {
 		name string
 		args []float64
@@ -20,7 +22,7 @@ func TestMin(t *testing.T) {
 	}
 }
 
-func TestMax(t *testing.T) {
+func Test_max(t *testing.T) {
 	tests := []struct {
 		name string
 		args []float64

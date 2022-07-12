@@ -1,29 +1,10 @@
 package main
 
 import (
-	"math"
+	"reflect"
+	"strings"
 	"testing"
 )
-
-// sameHSL checks if two hsl colors are close enough to be considered the same
-// in tests. The metric used is a simple distance.
-func sameHSL(c1, c2 hsl) bool {
-	dh := math.Abs(math.Mod(c1.h-c2.h, 360))
-	ds := math.Abs(c1.s - c2.s)
-	dl := math.Abs(c1.l - c2.l)
-	d := math.Sqrt(dh*dh + ds*ds + dl*dl)
-	return d < 1
-}
-
-// sameRGB does the same as sameHSL but for rgb colors. Take a shot every time
-// you read "same" 🤡.
-func sameRGB(c1, c2 rgb) bool {
-	dr := math.Abs(c1.r - c2.r)
-	dg := math.Abs(c1.g - c2.g)
-	db := math.Abs(c1.b - c2.b)
-	d := math.Sqrt(dr*dr + dg*dg + db*db)
-	return d < 1
-}
 
 func Test_rgb2hsl(t *testing.T) {
 	tests := []struct {
@@ -82,6 +63,53 @@ func Test_hsl2rgb(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := hsl2rgb(tt.in); !sameRGB(got, tt.out) {
 				t.Errorf("hsl2rgb() = %v, want %v", got, tt.out)
+			}
+		})
+	}
+}
+
+func Test_hex2rgb(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		want    rgb
+		wantErr bool
+	}{
+		{"test 1", "#FF6478", rgb{255, 100, 120}, false},
+		{"test 2", "#ff6478", rgb{255, 100, 120}, false},
+		{"test 3", "#FF68", rgb{0, 0, 0}, true},
+		{"test 4", "#FF684305", rgb{0, 0, 0}, true},
+		{"test 5", "FF6478", rgb{0, 0, 0}, true},
+		{"test 6", "#ZWF647", rgb{0, 0, 0}, true},
+		{"test 7", "", rgb{0, 0, 0}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := hex2rgb(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("hex2rgb() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("hex2rgb() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_rgb2hex(t *testing.T) {
+	tests := []struct {
+		name string
+		c    rgb
+		want string
+	}{
+		{"test 1", rgb{255, 100, 120}, "#FF6478"},
+		{"test 2", rgb{255, 255, 255}, "#FFFFFF"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := rgb2hex(tt.c); !strings.EqualFold(got, tt.want) {
+				t.Errorf("rgb2hex() = %v, want %v", got, tt.want)
 			}
 		})
 	}
