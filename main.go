@@ -121,6 +121,35 @@ func mix(c1, c2 string, w float64) (string, error) {
 	return rgb2hex(rgbx), nil
 }
 
+func setR(hex string, r float64) (string, error) {
+	rgb, err := hex2rgb(hex)
+	if err != nil {
+		return "", err
+	}
+	if r < 0 || r > 255 {
+		return "", errors.New("red component out of range (0-255)")
+	}
+	rgb.r = float64(r)
+	return rgb2hex(rgb), nil
+}
+
+func lighten(hex string, dl float64) (string, error) {
+	rgb, err := hex2rgb(hex)
+	if err != nil {
+		return "", err
+	}
+	hsl := rgb2hsl(rgb)
+	l := hsl.l + dl
+	if l > 100 {
+		hsl.l = 100
+	} else if l < 0 {
+		hsl.l = 0
+	} else {
+		hsl.l = l
+	}
+	return rgb2hex(hsl2rgb(hsl)), nil
+}
+
 func main() {
 	args := os.Args[1:]
 	if len(args) != 4 {
