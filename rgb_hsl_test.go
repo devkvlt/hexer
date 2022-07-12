@@ -5,18 +5,24 @@ import (
 	"testing"
 )
 
-func deepCloseHSL(c1, c2 hsl) bool {
+// sameHSL checks if two hsl colors are close enough to be considered the same
+// in tests. The metric used is a simple distance.
+func sameHSL(c1, c2 hsl) bool {
 	dh := math.Abs(math.Mod(c1.h-c2.h, 360))
 	ds := math.Abs(c1.s - c2.s)
 	dl := math.Abs(c1.l - c2.l)
-	return dh <= 1 && ds <= 1 && dl <= 1
+	d := math.Sqrt(dh*dh + ds*ds + dl*dl)
+	return d < 1
 }
 
-func deepCloseRGB(c1, c2 rgb) bool {
+// sameRGB does the same as sameHSL but for rgb colors. Take a shot every time
+// you read "same" 🤡.
+func sameRGB(c1, c2 rgb) bool {
 	dr := math.Abs(c1.r - c2.r)
 	dg := math.Abs(c1.g - c2.g)
 	db := math.Abs(c1.b - c2.b)
-	return dr <= 1 && dg <= 1 && db <= 1
+	d := math.Sqrt(dr*dr + dg*dg + db*db)
+	return d < 1
 }
 
 var rgbHSLTests = []struct {
@@ -51,7 +57,7 @@ var rgbHSLTests = []struct {
 func Test_rgb2hsl(t *testing.T) {
 	for _, tt := range rgbHSLTests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := rgb2hsl(tt.rgb); !deepCloseHSL(got, tt.hsl) {
+			if got := rgb2hsl(tt.rgb); !sameHSL(got, tt.hsl) {
 				t.Errorf("rgb2hsl() = %v, want %v", got, tt.hsl)
 			}
 		})
@@ -61,7 +67,7 @@ func Test_rgb2hsl(t *testing.T) {
 func Test_hsl2rgb(t *testing.T) {
 	for _, tt := range rgbHSLTests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := hsl2rgb(tt.hsl); !deepCloseRGB(got, tt.rgb) {
+			if got := hsl2rgb(tt.hsl); !sameRGB(got, tt.rgb) {
 				t.Errorf("hsl2rgb() = %v, want %v", got, tt.rgb)
 			}
 		})

@@ -82,9 +82,9 @@ func rgb2hsl(c rgb) hsl {
 	} else {
 		s = chroma / (1 - math.Abs(2*l-1))
 	}
-	h = math.Round(60 * h)
-	s = math.Round(100 * s)
-	l = math.Round(100 * l)
+	h = 60 * h
+	s = 100 * s
+	l = 100 * l
 	return hsl{h, s, l}
 }
 
@@ -98,9 +98,9 @@ func hsl2rgb(c hsl) rgb {
 		a := s * min(l, 1-l)
 		return l - a*max(-1, min(k-3, 9-k, 1))
 	}
-	r := math.Round(255 * f(0))
-	g := math.Round(255 * f(8))
-	b := math.Round(255 * f(4))
+	r := 255 * f(0)
+	g := 255 * f(8)
+	b := 255 * f(4)
 	return rgb{r, g, b}
 }
 
