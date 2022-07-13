@@ -17,9 +17,14 @@ go install github.com/devkvlt/hexer@latest
 
 ## Usage
 
-Only flag `-m` (mix colors) is available at the moment.
+Only command `mix` is available at the moment.
 
 ```bash
 # the last arg is the weight of the first color (number between 0 and 1)
-hexer -m "#ff0000" "#ffff00" 0.5
+hexer mix "#ff0000" "#ffff00" 0.2
+```
+
+```bash
+# weight defaults to 0.5
+hexer mix "#ff0000" "#ffff00"
 ```
