@@ -43,7 +43,7 @@ func Test_lighten(t *testing.T) {
 		{"test 1", "#BC5521", 20, "#E38B5E", false},
 		{"test 2: invalid color input", "#BC552", 20, "", true},
 		{"test 3: dl too big", "#BC5521", 100, "#FFFFFF", false},
-		{"test 4: dl too small", "#BC5521", -100, "#000000", false},
+		{"test 4: dl negative", "#BC5521", -10, "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -80,6 +80,33 @@ func Test_setR(t *testing.T) {
 			}
 			if !sameHEX(got, tt.want) {
 				t.Errorf("setR() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_setH(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		h       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 67, "#AABC21", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: hue out of range", "#BC5521", 400, "", true},
+		{"test 4: hue out of range", "#BC5521", -10, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := setH(tt.hex, tt.h)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("setH() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setH() = %v, want %v", got, tt.want)
 			}
 		})
 	}

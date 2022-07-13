@@ -4,14 +4,6 @@ import (
 	"math"
 )
 
-type rgb struct {
-	r, g, b float64
-}
-
-type hsl struct {
-	h, s, l float64
-}
-
 func min(nums ...float64) float64 {
 	m := nums[0]
 	for _, v := range nums {
