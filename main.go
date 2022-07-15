@@ -13,22 +13,27 @@ func main() {
 		{
 			Name:   "mix",
 			Usage:  "Mixes two colors",
-			Action: actionMix,
+			Action: handleMix,
 		},
 		{
 			Name:   "lighten",
 			Usage:  "Lightens a color",
-			Action: actionLighten,
+			Action: handleLighten,
+		},
+		{
+			Name:   "darken",
+			Usage:  "Darkens a color",
+			Action: handleDarken,
 		},
 		{
 			Name:   "setr",
 			Usage:  "Sets the red component of a color",
-			Action: actionSetRed,
+			Action: handleSetr,
 		},
 		{
 			Name:   "seth",
 			Usage:  "Sets the hue of a color",
-			Action: actionSetHue,
+			Action: handleSeth,
 		},
 	}
 

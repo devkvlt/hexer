@@ -33,29 +33,40 @@ func setR(hex string, r float64) (string, error) {
 	return rgb2hex(rgb), nil
 }
 
-func lighten(hex string, dl float64) (string, error) {
-	if dl < 0 {
+func lighten(hex string, a float64) (string, error) {
+	if a < 0 {
 		return "", errors.New("invalid dl, dl has to be >= 0")
 	}
-	rgb, err := hex2rgb(hex)
+	hsl, err := hex2hsl(hex)
 	if err != nil {
 		return "", err
 	}
-	hsl := rgb2hsl(rgb)
-	l := hsl.l + dl
+	l := hsl.l + a
 	hsl.l = min(l, 100)
-	return rgb2hex(hsl2rgb(hsl)), nil
+	return hsl2hex(hsl), nil
+}
+
+func darken(hex string, a float64) (string, error) {
+	if a < 0 {
+		return "", errors.New("invalid a, a has to be >= 0")
+	}
+	hsl, err := hex2hsl(hex)
+	if err != nil {
+		return "", err
+	}
+	l := hsl.l - a
+	hsl.l = max(l, 0)
+	return hsl2hex(hsl), nil
 }
 
 func setH(hex string, h float64) (string, error) {
-	rgb, err := hex2rgb(hex)
+	hsl, err := hex2hsl(hex)
 	if err != nil {
 		return "", err
 	}
 	if h < 0 || h > 360 {
 		return "", errors.New("hue out of range (0-360)")
 	}
-	hsl := rgb2hsl(rgb)
 	hsl.h = h
-	return rgb2hex(hsl2rgb(hsl)), nil
+	return hsl2hex(hsl), nil
 }

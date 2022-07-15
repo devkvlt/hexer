@@ -31,6 +31,15 @@ func hex2rgb(hex string) (rgb, error) {
 	return rgb{float64(r), float64(g), float64(b)}, nil
 }
 
+func hsl2hex(c hsl) string {
+	return rgb2hex(hsl2rgb(c))
+}
+
+func hex2hsl(hex string) (hsl, error) {
+	rgb, err := hex2rgb(hex)
+	return rgb2hsl(rgb), err
+}
+
 // https://en.wikipedia.org/wiki/HSL_and_HSV#General_approach
 func rgb2hsl(c rgb) hsl {
 	r := c.r / 255

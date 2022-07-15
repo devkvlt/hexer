@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func actionMix(ctx *cli.Context) error {
+func handleMix(ctx *cli.Context) error {
 	argc := ctx.NArg()
 	if argc < 2 {
 		return cli.Exit("command mix requires at least 3 arguments", 1)
@@ -32,7 +32,7 @@ func actionMix(ctx *cli.Context) error {
 	return nil
 }
 
-func actionLighten(ctx *cli.Context) error {
+func handleLighten(ctx *cli.Context) error {
 	argc := ctx.NArg()
 	if argc < 2 {
 		return cli.Exit("command lighten requires 2 arguments", 1)
@@ -40,19 +40,39 @@ func actionLighten(ctx *cli.Context) error {
 		return cli.Exit("too many arguments", 1)
 	}
 	c := ctx.Args().Get(0)
-	dl, err := strconv.ParseFloat(ctx.Args().Get(1), 64)
+	a, err := strconv.ParseFloat(ctx.Args().Get(1), 64)
 	if err != nil {
-		return cli.Exit("invalid dl, dl must be a number >= 0", 1)
+		return cli.Exit("amount must be a number >= 0", 1)
 	}
-	l, err := lighten(c, dl)
+	c_, err := lighten(c, a)
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
-	fmt.Println(l)
+	fmt.Println(c_)
 	return nil
 }
 
-func actionSetRed(ctx *cli.Context) error {
+func handleDarken(ctx *cli.Context) error {
+	argc := ctx.NArg()
+	if argc < 2 {
+		return cli.Exit("command darken requires 2 arguments", 1)
+	} else if argc > 2 {
+		return cli.Exit("too many arguments", 1)
+	}
+	c := ctx.Args().Get(0)
+	a, err := strconv.ParseFloat(ctx.Args().Get(1), 64)
+	if err != nil {
+		return cli.Exit("amount must be a number >= 0", 1)
+	}
+	c_, err := darken(c, a)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	fmt.Println(c_)
+	return nil
+}
+
+func handleSetr(ctx *cli.Context) error {
 	argc := ctx.NArg()
 	if argc < 2 {
 		return cli.Exit("command setr requires 2 arguments", 1)
@@ -72,7 +92,7 @@ func actionSetRed(ctx *cli.Context) error {
 	return nil
 }
 
-func actionSetHue(ctx *cli.Context) error {
+func handleSeth(ctx *cli.Context) error {
 	argc := ctx.NArg()
 	if argc < 2 {
 		return cli.Exit("command seth requires 2 arguments", 1)
