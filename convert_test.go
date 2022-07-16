@@ -30,7 +30,7 @@ func Test_rgb2hsl(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := rgb2hsl(tt.in); !sameHSL(got, tt.out) {
+			if got := rgb2hsl(tt.in); !sameHSL(got, tt.out, 0.5) {
 				t.Errorf("rgb2hsl() = %v, want %v", got, tt.out)
 			}
 		})
@@ -61,7 +61,7 @@ func Test_hsl2rgb(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := hsl2rgb(tt.in); !sameRGB(got, tt.out) {
+			if got := hsl2rgb(tt.in); !sameRGB(got, tt.out, 0.5) {
 				t.Errorf("hsl2rgb() = %v, want %v", got, tt.out)
 			}
 		})

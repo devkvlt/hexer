@@ -24,24 +24,36 @@ func max(nums ...float64) float64 {
 	return float64(m)
 }
 
-// sameHSL checks if two hsl colors are close enough to be considered the same
-// in tests. The metric used is a simple distance.
-func sameHSL(c1, c2 hsl) bool {
-	dh := math.Abs(math.Mod(c1.h-c2.h, 360))
-	ds := math.Abs(c1.s - c2.s)
-	dl := math.Abs(c1.l - c2.l)
-	d := math.Sqrt(dh*dh + ds*ds + dl*dl)
-	return d < 1
+func rDist(c1, c2 rgb) float64 { return math.Abs(c1.r - c2.r) }
+func gDist(c1, c2 rgb) float64 { return math.Abs(c1.g - c2.g) }
+func bDist(c1, c2 rgb) float64 { return math.Abs(c1.b - c2.b) }
+
+func rgbDist(c1, c2 rgb) float64 {
+	// normalize so that 100 becomes the max dist instead of 255
+	rdn := rDist(c1, c2) * 100 / 255
+	gdn := gDist(c1, c2) * 100 / 255
+	bdn := bDist(c1, c2) * 100 / 255
+	return math.Sqrt(rdn*rdn + gdn*gdn + bdn*bdn)
 }
 
-// sameRGB does the same as sameHSL but for rgb colors. Take a shot every time
-// you read "same" 🤡.
-func sameRGB(c1, c2 rgb) bool {
-	dr := math.Abs(c1.r - c2.r)
-	dg := math.Abs(c1.g - c2.g)
-	db := math.Abs(c1.b - c2.b)
-	d := math.Sqrt(dr*dr + dg*dg + db*db)
-	return d < 1
+func sameRGB(c1, c2 rgb, eps float64) bool {
+	return rgbDist(c1, c2) < eps
+}
+
+func hDist(c1, c2 hsl) float64 { return math.Abs(math.Mod(c1.h-c2.h, 360)) }
+func sDist(c1, c2 hsl) float64 { return math.Abs(c1.s - c2.s) }
+func lDist(c1, c2 hsl) float64 { return math.Abs(c1.l - c2.l) }
+
+func hslDist(c1, c2 hsl) float64 {
+	// normalize so that 100 becomes the max dist instead of 360
+	hdn := hDist(c1, c2) * 100 / 360
+	sdn := sDist(c1, c2)
+	ldn := lDist(c1, c2)
+	return math.Sqrt(hdn*hdn + sdn*sdn + ldn*ldn)
+}
+
+func sameHSL(c1, c2 hsl, eps float64) bool {
+	return hslDist(c1, c2) < eps
 }
 
 func sameHEX(c1, c2 string) bool {
@@ -53,12 +65,5 @@ func sameHEX(c1, c2 string) bool {
 	if err1 != nil || err2 != nil {
 		return false
 	}
-	dr := math.Abs(rgb1.r - rgb2.r)
-	dg := math.Abs(rgb1.g - rgb2.g)
-	db := math.Abs(rgb1.b - rgb2.b)
-	d := math.Sqrt(dr*dr + dg*dg + db*db)
-	return d < 2.5
-	// 2.5 is actually unnoticeable
-	// TODO: add minD param to sameRGB func and reuse here
-
+	return sameRGB(rgb1, rgb2, 1)
 }
