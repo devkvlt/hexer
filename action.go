@@ -57,3 +57,22 @@ func makeActionFunc(f func(string, float64) (string, error)) func(*cli.Context) 
 		return nil
 	}
 }
+
+// makeActionFunc2 does same as makeActionFunc but for get functions.
+// TODO: find good names for these funcs.
+func makeActionFunc2(f func(string) (float64, error)) func(*cli.Context) error {
+	return func(ctx *cli.Context) error {
+		name := ctx.Command.FullName()
+		errStr := fmt.Sprintf("command %q expects a hex color", name)
+		if ctx.NArg() != 1 {
+			return cli.Exit(errStr, 1)
+		}
+		c := ctx.Args().Get(0)
+		x, err := f(c)
+		if err != nil {
+			return cli.Exit(err, 1)
+		}
+		fmt.Println(x)
+		return nil
+	}
+}

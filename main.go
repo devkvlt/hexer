@@ -11,6 +11,36 @@ func main() {
 
 	app.Commands = []*cli.Command{
 		{
+			Name:   "getr",
+			Usage:  "Prints the red component of a color",
+			Action: makeActionFunc2(getRed),
+		},
+		{
+			Name:   "getg",
+			Usage:  "Prints the green component of a color",
+			Action: makeActionFunc2(getGreen),
+		},
+		{
+			Name:   "getb",
+			Usage:  "Prints the blue component of a color",
+			Action: makeActionFunc2(getBlue),
+		},
+		{
+			Name:   "geth",
+			Usage:  "Prints the hue component of a color",
+			Action: makeActionFunc2(getHue),
+		},
+		{
+			Name:   "gets",
+			Usage:  "Prints the saturation component of a color",
+			Action: makeActionFunc2(getSaturation),
+		},
+		{
+			Name:   "getl",
+			Usage:  "Prints the lightness component of a color",
+			Action: makeActionFunc2(getLightness),
+		},
+		{
 			Name:   "mix",
 			Usage:  "Mixes two colors",
 			Action: mixActionFunc,
