@@ -13,27 +13,57 @@ func main() {
 		{
 			Name:   "mix",
 			Usage:  "Mixes two colors",
-			Action: handleMix,
+			Action: mixActionFunc,
 		},
 		{
 			Name:   "lighten",
 			Usage:  "Lightens a color",
-			Action: handleLighten,
+			Action: makeActionFunc(lighten),
 		},
 		{
 			Name:   "darken",
 			Usage:  "Darkens a color",
-			Action: handleDarken,
+			Action: makeActionFunc(darken),
+		},
+		{
+			Name:   "saturate",
+			Usage:  "Saturates a color",
+			Action: makeActionFunc(saturate),
+		},
+		{
+			Name:   "unsaturate",
+			Usage:  "Unsaturates a color",
+			Action: makeActionFunc(unsaturate),
 		},
 		{
 			Name:   "setr",
 			Usage:  "Sets the red component of a color",
-			Action: handleSetr,
+			Action: makeActionFunc(setRed),
+		},
+		{
+			Name:   "setg",
+			Usage:  "Sets the green component of a color",
+			Action: makeActionFunc(setGreen),
+		},
+		{
+			Name:   "setb",
+			Usage:  "Sets the blue component of a color",
+			Action: makeActionFunc(setBlue),
 		},
 		{
 			Name:   "seth",
 			Usage:  "Sets the hue of a color",
-			Action: handleSeth,
+			Action: makeActionFunc(setHue),
+		},
+		{
+			Name:   "sets",
+			Usage:  "Sets the saturation of a color",
+			Action: makeActionFunc(setSaturation),
+		},
+		{
+			Name:   "setl",
+			Usage:  "Sets the lightness of a color",
+			Action: makeActionFunc(setLightness),
 		},
 	}
 

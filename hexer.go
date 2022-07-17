@@ -218,7 +218,6 @@ func makeMixPalette(c1, c2 string, n int) ([]string, error) {
 	}
 	palette := make([]string, n)
 	for i := 0; i < n; i++ {
-		// 0 + i*1/(n-1)
 		w := float64(i) / float64(n-1)
 		mix, err := mix(c1, c2, w)
 		if err != nil {
