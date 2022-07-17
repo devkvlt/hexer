@@ -1,32 +1,270 @@
 package main
 
 import (
+	"math"
 	"strings"
 	"testing"
 )
 
-func Test_mix(t *testing.T) {
+var getTestCases = []struct {
+	name    string
+	hex     string
+	r       float64
+	g       float64
+	b       float64
+	h       float64
+	s       float64
+	l       float64
+	wantErr bool
+}{
+	{"test 1", "#C966B2", 201, 102, 178, 314, 48, 59, false},
+	{"test 2", "#ACE1A8", 172, 225, 168, 116, 49, 77, false},
+	{"test 3: bad input", "#ACE8", 0, 0, 0, 0, 0, 0, true},
+}
+
+func Test_getRed(t *testing.T) {
+	for _, tt := range getTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getRed(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getRed() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.r) > 0.5 {
+				t.Errorf("getRed() = %v, want %v", got, tt.r)
+			}
+		})
+	}
+}
+
+func Test_getGreen(t *testing.T) {
+	for _, tt := range getTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getGreen(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getRed() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.g) > 0.5 {
+				t.Errorf("getRed() = %v, want %v", got, tt.g)
+			}
+		})
+	}
+}
+
+func Test_getBlue(t *testing.T) {
+	for _, tt := range getTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getBlue(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getBlue() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.b) > 0.5 {
+				t.Errorf("getBlue() = %v, want %v", got, tt.b)
+			}
+		})
+	}
+}
+
+func Test_getHue(t *testing.T) {
+	for _, tt := range getTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getHue(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getHue() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.h) > 1 {
+				t.Errorf("getHue() = %v, want %v", got, tt.h)
+			}
+		})
+	}
+}
+
+func Test_getSaturation(t *testing.T) {
+	for _, tt := range getTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getSaturation(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getSaturation() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.s) > 1 {
+				t.Errorf("getSaturation() = %v, want %v", got, tt.s)
+			}
+		})
+	}
+}
+
+func Test_getLightness(t *testing.T) {
+	for _, tt := range getTestCases {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getLightness(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getLightness() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.l) > 1 {
+				t.Errorf("getLightness() = %v, want %v", got, tt.l)
+			}
+		})
+	}
+}
+
+func Test_setRed(t *testing.T) {
 	tests := []struct {
 		name    string
-		c1      string
-		c2      string
-		w       float64
+		hex     string
+		r       float64
 		want    string
 		wantErr bool
 	}{
-		{"test 1", "#FF0000", "#FFFF00", 0.5, "#FF8000", false},
-		{"test 2", "#FF000", "#FFFF00", 0.5, "", true},
-		{"test 3", "#FF0000", "#FFFF00", 1.2, "", true},
+		{"test 1", "#BC5521", 45, "#2D5521", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: red out of range", "#BC5521", 300, "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := mix(tt.c1, tt.c2, tt.w)
+			got, err := setRed(tt.hex, tt.r)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("mix() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("setRed() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !strings.EqualFold(got, tt.want) {
-				t.Errorf("mix() = %v, want %v", got, tt.want)
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setRed() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_setGreen(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		r       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 45, "#BC2D21", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: green out of range", "#BC5521", 300, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := setGreen(tt.hex, tt.r)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("setGreen() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setGreen() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+func Test_setBlue(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		r       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 45, "#BC552D", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: blue out of range", "#BC5521", 300, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := setBlue(tt.hex, tt.r)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("setBlue() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setBlue() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_setHue(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		h       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 67, "#AABC21", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: hue out of range", "#BC5521", 400, "", true},
+		{"test 4: hue out of range", "#BC5521", -10, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := setHue(tt.hex, tt.h)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("setHue() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setHue() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_setSaturation(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		h       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 45, "#9F5D3C", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: hue out of range", "#BC5521", 400, "", true},
+		{"test 4: hue out of range", "#BC5521", -10, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := setSaturation(tt.hex, tt.h)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("setSaturation() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setSaturation() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_setLightness(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		h       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 23, "#642D12", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: hue out of range", "#BC5521", 400, "", true},
+		{"test 4: hue out of range", "#BC5521", -10, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := setLightness(tt.hex, tt.h)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("setLightness() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("setLightness() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -59,54 +297,181 @@ func Test_lighten(t *testing.T) {
 	}
 }
 
-func Test_setR(t *testing.T) {
+func Test_darken(t *testing.T) {
 	tests := []struct {
 		name    string
 		hex     string
-		r       float64
+		dl      float64
 		want    string
 		wantErr bool
 	}{
-		{"test 1", "#BC5521", 45, "#2D5521", false},
+		{"test 1", "#BC5521", 20, "#642D12", false},
 		{"test 2: invalid color input", "#BC552", 20, "", true},
-		{"test 3: red component out of range", "#BC5521", 300, "", true},
+		{"test 3: amount too big", "#BC5521", 100, "#000000", false},
+		{"test 4: negative amount", "#BC5521", -10, "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setR(tt.hex, tt.r)
+			got, err := darken(tt.hex, tt.dl)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("setR() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("darken() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !sameHEX(got, tt.want) {
-				t.Errorf("setR() = %v, want %v", got, tt.want)
+				t.Errorf("darken() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_setH(t *testing.T) {
+func Test_saturate(t *testing.T) {
 	tests := []struct {
 		name    string
 		hex     string
-		h       float64
+		dl      float64
 		want    string
 		wantErr bool
 	}{
-		{"test 1", "#BC5521", 67, "#AABC21", false},
+		{"test 1", "#BC5521", 20, "#D04D0B", false},
 		{"test 2: invalid color input", "#BC552", 20, "", true},
-		{"test 3: hue out of range", "#BC5521", 400, "", true},
-		{"test 4: hue out of range", "#BC5521", -10, "", true},
+		{"test 3: amount too big", "#BC5521", 100, "#DB4900", false},
+		{"test 4: negative amount", "#BC5521", -10, "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setH(tt.hex, tt.h)
+			got, err := saturate(tt.hex, tt.dl)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("setH() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("saturate() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !sameHEX(got, tt.want) {
-				t.Errorf("setH() = %v, want %v", got, tt.want)
+				t.Errorf("saturate() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_unsaturate(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		dl      float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#BC5521", 20, "#A45B37", false},
+		{"test 2: invalid color input", "#BC552", 20, "", true},
+		{"test 3: amount too big", "#BC5521", 100, "#6E6E6E", false},
+		{"test 4: negative amount", "#BC5521", -10, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := unsaturate(tt.hex, tt.dl)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("unsaturate() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("unsaturate() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_mix(t *testing.T) {
+	tests := []struct {
+		name    string
+		c1      string
+		c2      string
+		w       float64
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#FF0000", "#FFFF00", 0.5, "#FF8000", false},
+		{"test 2", "#FF000", "#FFFF00", 0.5, "", true},
+		{"test 3", "#FF0000", "#FFFF00", 1.2, "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := mix(tt.c1, tt.c2, tt.w)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("mix() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !strings.EqualFold(got, tt.want) {
+				t.Errorf("mix() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_makeMixPalette(t *testing.T) {
+	tests := []struct {
+		name    string
+		c1, c2  string
+		n       int
+		want    []string
+		wantErr bool
+	}{
+		{"test 1", "#ACE1A8", "#E16BC3", 6, []string{"#E16BC3", "#d683be", "#cc9ab8", "#c1b2b3", "#b7c9ad", "#ACE1A8"}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := makeMixPalette(tt.c1, tt.c2, tt.n)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("makeMixPalette() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !samePalette(got, tt.want) {
+				t.Errorf("makeMixPalette() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_makeDarkPalette(t *testing.T) {
+	tests := []struct {
+		name    string
+		c       string
+		n       int
+		want    []string
+		wantErr bool
+	}{
+		{"test 1", "#A92388", 5, []string{"#A92388", "#7F1A66", "#551144", "#2A0922", "#000000"}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := makeDarkPalette(tt.c, tt.n)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("makeDarkPalette() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !samePalette(got, tt.want) {
+				t.Errorf("makeDarkPalette() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_makeLightPalette(t *testing.T) {
+	tests := []struct {
+		name    string
+		c       string
+		n       int
+		want    []string
+		wantErr bool
+	}{
+		{"test 1", "#A92388", 4, []string{"#A92388", "#DC56BB", "#EEAADD", "#FFFFFF"}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := makeLightPalette(tt.c, tt.n)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("makeLightPalette() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !samePalette(got, tt.want) {
+				t.Errorf("makeLightPalette() = %v, want %v", got, tt.want)
 			}
 		})
 	}

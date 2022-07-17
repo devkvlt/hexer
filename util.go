@@ -67,3 +67,16 @@ func sameHEX(c1, c2 string) bool {
 	}
 	return sameRGB(rgb1, rgb2, 1)
 }
+
+func samePalette(p1, p2 []string) bool {
+	l1, l2 := len(p1), len(p2)
+	if l1 != l2 {
+		return false
+	}
+	for i := 0; i < l1; i++ {
+		if !sameHEX(p1[i], p2[i]) {
+			return false
+		}
+	}
+	return true
+}

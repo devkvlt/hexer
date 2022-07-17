@@ -84,7 +84,7 @@ func handleSetr(ctx *cli.Context) error {
 	if err != nil {
 		return cli.Exit("invalid r, r must be a number between 0 and 255", 1)
 	}
-	newC, err := setR(c, r)
+	newC, err := setRed(c, r)
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
@@ -104,7 +104,7 @@ func handleSeth(ctx *cli.Context) error {
 	if err != nil {
 		return cli.Exit("invalid h, h must be a number between 0 and 360", 1)
 	}
-	newC, err := setH(c, h)
+	newC, err := setHue(c, h)
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
