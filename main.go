@@ -41,11 +41,6 @@ func main() {
 			Action: makeActionFunc2(getLightness),
 		},
 		{
-			Name:   "mix",
-			Usage:  "Mixes two colors",
-			Action: mixActionFunc,
-		},
-		{
 			Name:   "lighten",
 			Usage:  "Lightens a color",
 			Action: makeActionFunc(lighten),
@@ -94,6 +89,28 @@ func main() {
 			Name:   "setl",
 			Usage:  "Sets the lightness of a color",
 			Action: makeActionFunc(setLightness),
+		},
+		{
+			Name:   "mix",
+			Usage:  "Mixes two colors",
+			Action: mixActionFunc,
+		},
+		{
+			Name:   "mixpal",
+			Usage:  "Makes a pelette of colors between two colors",
+			Action: mixPaletteActionFunc,
+		},
+
+		{
+			Name:   "darkpal",
+			Usage:  "Makes a dark palette for a color",
+			Action: darkPaletteActionFunc,
+		},
+
+		{
+			Name:   "lightpal",
+			Usage:  "Makes a light palette for a color",
+			Action: lightPaletteActionFunc,
 		},
 	}
 

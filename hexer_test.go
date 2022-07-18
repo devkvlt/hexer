@@ -405,7 +405,7 @@ func Test_mix(t *testing.T) {
 	}
 }
 
-func Test_makeMixPalette(t *testing.T) {
+func Test_mixPalette(t *testing.T) {
 	tests := []struct {
 		name    string
 		c1, c2  string
@@ -413,23 +413,23 @@ func Test_makeMixPalette(t *testing.T) {
 		want    []string
 		wantErr bool
 	}{
-		{"test 1", "#ACE1A8", "#E16BC3", 6, []string{"#E16BC3", "#d683be", "#cc9ab8", "#c1b2b3", "#b7c9ad", "#ACE1A8"}, false},
+		{"test 1", "#ACE1A8", "#E16BC3", 6, []string{"#ACE1A8", "#b7c9ad", "#c1b2b3", "#cc9ab8", "#d683be", "#E16BC3"}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := makeMixPalette(tt.c1, tt.c2, tt.n)
+			got, err := mixPalette(tt.c1, tt.c2, tt.n)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("makeMixPalette() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("mixPalette() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !samePalette(got, tt.want) {
-				t.Errorf("makeMixPalette() = %v, want %v", got, tt.want)
+				t.Errorf("mixPalette() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_makeDarkPalette(t *testing.T) {
+func Test_darkPalette(t *testing.T) {
 	tests := []struct {
 		name    string
 		c       string
@@ -441,19 +441,19 @@ func Test_makeDarkPalette(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := makeDarkPalette(tt.c, tt.n)
+			got, err := darkPalette(tt.c, tt.n)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("makeDarkPalette() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("darkPalette() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !samePalette(got, tt.want) {
-				t.Errorf("makeDarkPalette() = %v, want %v", got, tt.want)
+				t.Errorf("darkPalette() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_makeLightPalette(t *testing.T) {
+func Test_lightPalette(t *testing.T) {
 	tests := []struct {
 		name    string
 		c       string
@@ -465,13 +465,13 @@ func Test_makeLightPalette(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := makeLightPalette(tt.c, tt.n)
+			got, err := lightPalette(tt.c, tt.n)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("makeLightPalette() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("lightPalette() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !samePalette(got, tt.want) {
-				t.Errorf("makeLightPalette() = %v, want %v", got, tt.want)
+				t.Errorf("lightPalette() = %v, want %v", got, tt.want)
 			}
 		})
 	}

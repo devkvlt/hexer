@@ -209,10 +209,10 @@ func mix(c1, c2 string, w float64) (string, error) {
 	return rgb2hex(rgbx), nil
 }
 
-// makeMixPalette makes a slice of colors representing a palette of n equally
+// mixPalette makes a slice of colors representing a palette of n equally
 // distanced colors between c1 and c2 (c1 and c2 included) and returns it with
 // an error.
-func makeMixPalette(c1, c2 string, n int) ([]string, error) {
+func mixPalette(c1, c2 string, n int) ([]string, error) {
 	if n < 2 {
 		return []string{}, errors.New("n must be >= 2")
 	}
@@ -223,13 +223,13 @@ func makeMixPalette(c1, c2 string, n int) ([]string, error) {
 		if err != nil {
 			return []string{}, err
 		}
-		palette[i] = mix
+		palette[n-1-i] = mix
 	}
 	return palette, nil
 }
 
-// makeDarkPalette
-func makeDarkPalette(c string, n int) ([]string, error) {
+// darkPalette
+func darkPalette(c string, n int) ([]string, error) {
 	if n < 2 {
 		return []string{}, errors.New("n must be >= 2")
 	}
@@ -247,8 +247,8 @@ func makeDarkPalette(c string, n int) ([]string, error) {
 	return palette, nil
 }
 
-// makeLightPalette
-func makeLightPalette(c string, n int) ([]string, error) {
+// lightPalette
+func lightPalette(c string, n int) ([]string, error) {
 	if n < 2 {
 		return []string{}, errors.New("n must be >= 2")
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 
 	"github.com/urfave/cli/v2"
@@ -72,7 +73,68 @@ func makeActionFunc2(f func(string) (float64, error)) func(*cli.Context) error {
 		if err != nil {
 			return cli.Exit(err, 1)
 		}
-		fmt.Println(x)
+		fmt.Println(math.Round(x))
 		return nil
 	}
+}
+
+func mixPaletteActionFunc(ctx *cli.Context) error {
+	argc := ctx.NArg()
+	args := ctx.Args()
+	name := ctx.Command.FullName()
+	errStr := fmt.Sprintf("command %q expects two hex colors and an integer >= 2", name)
+	if argc != 3 {
+		return cli.Exit(errStr, 1)
+	}
+	c1 := args.Get(0)
+	c2 := args.Get(1)
+	n, _ := strconv.Atoi(args.Get(2))
+	palette, err := mixPalette(c1, c2, n)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	for _, v := range palette {
+		fmt.Println(v)
+	}
+	return nil
+}
+
+func darkPaletteActionFunc(ctx *cli.Context) error {
+	argc := ctx.NArg()
+	args := ctx.Args()
+	name := ctx.Command.FullName()
+	errStr := fmt.Sprintf("command %q expects a hex color and an integer >= 2", name)
+	if argc != 2 {
+		return cli.Exit(errStr, 1)
+	}
+	c := args.Get(0)
+	n, _ := strconv.Atoi(args.Get(1))
+	palette, err := darkPalette(c, n)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	for _, v := range palette {
+		fmt.Println(v)
+	}
+	return nil
+}
+
+func lightPaletteActionFunc(ctx *cli.Context) error {
+	argc := ctx.NArg()
+	args := ctx.Args()
+	name := ctx.Command.FullName()
+	errStr := fmt.Sprintf("command %q expects a hex color and an integer >= 2", name)
+	if argc != 2 {
+		return cli.Exit(errStr, 1)
+	}
+	c := args.Get(0)
+	n, _ := strconv.Atoi(args.Get(1))
+	palette, err := lightPalette(c, n)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	for _, v := range palette {
+		fmt.Println(v)
+	}
+	return nil
 }
