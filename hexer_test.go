@@ -476,3 +476,56 @@ func Test_lightPalette(t *testing.T) {
 		})
 	}
 }
+
+func Test_invert(t *testing.T) {
+	tests := []struct {
+		name    string
+		hex     string
+		want    string
+		wantErr bool
+	}{
+		{"test 1", "#0066cc", "#ff9933", false},
+		{"test 2", "#b8cbde", "#473421", false},
+		{"test 3", "#b71a92", "#48e56d", false},
+		{"test 4", "#b71a", "", true},
+		{"test 5", "", "", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := invert(tt.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("invert() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !sameHEX(got, tt.want) {
+				t.Errorf("invert() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_contrastRatio(t *testing.T) {
+	tests := []struct {
+		name    string
+		c1, c2  string
+		want    float64
+		wantErr bool
+	}{
+		{"test 1", "#7B3131", "#ACC8E5", 5.22, false},
+		{"test 2", "#B67272", "#ACC8E5", 2.15, false},
+		{"test 3", "#C1A6A6", "#000000", 9.27, false},
+		{"test 4", "#C1A6", "#000000", 0, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := contrastRatio(tt.c1, tt.c2)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("contrastRatio() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if math.Abs(got-tt.want) > 0.1 {
+				t.Errorf("contrastRatio() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

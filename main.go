@@ -11,6 +11,17 @@ func main() {
 
 	app.Commands = []*cli.Command{
 		{
+			Name:   "invert",
+			Usage:  "Inverts a color",
+			Action: invertActionFunc,
+		},
+		{
+			Name:   "contrast",
+			Usage:  "Prints the contrast ration of 2 colors",
+			Action: contrastRatioActionFunc,
+		},
+
+		{
 			Name:   "getr",
 			Usage:  "Prints the red component of a color",
 			Action: makeActionFunc2(getRed),
@@ -39,6 +50,11 @@ func main() {
 			Name:   "getl",
 			Usage:  "Prints the lightness component of a color",
 			Action: makeActionFunc2(getLightness),
+		},
+		{
+			Name:   "luminance",
+			Usage:  "Prints the luminance of a color",
+			Action: makeActionFunc2(luminance),
 		},
 		{
 			Name:   "lighten",

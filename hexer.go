@@ -5,7 +5,55 @@ package main
 
 import (
 	"errors"
+	"math"
 )
+
+// luminance returns the relative luminance of a color.
+// https://en.wikipedia.org/wiki/Relative_luminance
+func luminance(c string) (float64, error) {
+	rgb, err := hex2rgb(c)
+	if err != nil {
+		return 0, err
+	}
+	vr := rgb.r / 255
+	vg := rgb.g / 255
+	vb := rgb.b / 255
+	f := func(ch float64) float64 {
+		if ch <= 0.04045 {
+			return ch / 12.92
+		}
+		return math.Pow((ch+0.055)/1.055, 2.4)
+	}
+	return 0.2126*f(vr) + 0.7152*f(vg) + 0.0722*f(vb), nil
+}
+
+// contrastRatio returns the CR of 2 colors.
+func contrastRatio(c1, c2 string) (float64, error) {
+	l1, err := luminance(c1)
+	if err != nil {
+		return 0, err
+	}
+	l2, err := luminance(c2)
+	if err != nil {
+		return 0, err
+	}
+	if l1 > l2 {
+		return (l1 + 0.05) / (l2 + 0.05), nil
+	}
+	return (l2 + 0.05) / (l1 + 0.05), nil
+}
+
+// invert returns the inverse of a color and an error.
+func invert(hex string) (string, error) {
+	c, err := hex2rgb(hex)
+	if err != nil {
+		return "", err
+	}
+	c.r = 255 - c.r
+	c.g = 255 - c.g
+	c.b = 255 - c.b
+	return rgb2hex(c), nil
+}
 
 // getRed returns the red channel of a color and an error.
 func getRed(hex string) (float64, error) {

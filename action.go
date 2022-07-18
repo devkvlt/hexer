@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"strconv"
 
 	"github.com/urfave/cli/v2"
@@ -73,7 +72,7 @@ func makeActionFunc2(f func(string) (float64, error)) func(*cli.Context) error {
 		if err != nil {
 			return cli.Exit(err, 1)
 		}
-		fmt.Println(math.Round(x))
+		fmt.Println(x)
 		return nil
 	}
 }
@@ -136,5 +135,40 @@ func lightPaletteActionFunc(ctx *cli.Context) error {
 	for _, v := range palette {
 		fmt.Println(v)
 	}
+	return nil
+}
+
+func invertActionFunc(ctx *cli.Context) error {
+	argc := ctx.NArg()
+	args := ctx.Args()
+	name := ctx.Command.FullName()
+	errStr := fmt.Sprintf("command %q expects a hex color", name)
+	if argc != 1 {
+		return cli.Exit(errStr, 1)
+	}
+	c := args.Get(0)
+	i, err := invert(c)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	fmt.Println(i)
+	return nil
+}
+
+func contrastRatioActionFunc(ctx *cli.Context) error {
+	argc := ctx.NArg()
+	args := ctx.Args()
+	name := ctx.Command.FullName()
+	errStr := fmt.Sprintf("command %q expects 2 hex colors", name)
+	if argc != 2 {
+		return cli.Exit(errStr, 1)
+	}
+	c1 := args.Get(0)
+	c2 := args.Get(1)
+	cr, err := contrastRatio(c1, c2)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	fmt.Println(cr)
 	return nil
 }
