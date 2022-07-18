@@ -12,6 +12,7 @@ func mixActionFunc(ctx *cli.Context) error {
 	args := ctx.Args()
 	name := ctx.Command.FullName()
 	errStr := fmt.Sprintf("command %q expects two hex colors and an optional number between 0 and 1", name)
+	// TODO: should add "run hexer help $name to get help"...
 	if argc != 2 && argc != 3 {
 		return cli.Exit(errStr, 1)
 	}

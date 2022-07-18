@@ -7,7 +7,7 @@
 [![Coverage](https://coveralls.io/repos/github/devkvlt/hexer/badge.svg)](https://coveralls.io/github/devkvlt/hexer)
 ![License](https://img.shields.io/github/license/devkvlt/hexer)
 
-A command line tool to manipulate hex colors 🎨.
+A command line tool to inspect and manipulate hex colors 🎨 with a simple and straightforward API.
 
 ## Installation
 
@@ -19,21 +19,34 @@ go install github.com/devkvlt/hexer@latest
 
 ```
 USAGE:
-   hexer <command> <arguments...>
+   hexer  command [command options] [arguments...]
+
+DESCRIPTION:
+   Hexer is a command line tool that inspects and manipulates hex colors. All input colors must be in long hex format (6 hex digits prefixed with #.)
+
 COMMANDS:
-   mix      Mixes two colors
-   lighten  Lightens a color
-   setr     Sets the red component of a color
-   seth     Sets the hue of a color
-```
-
-Examples:
-
-```bash
-# the last arg is the weight of the first color (number between 0 and 1)
-hexer mix "#ff0000" "#ffff00" 0.2
-
-hexer mix "#ff0000" "#ffff00" # weight defaults to 0.5
-
-hexer setr "#ff0000" 0
+   help        show help
+   red         print red
+   green       print green
+   blue        print blue
+   hue         print hue
+   saturation  print saturation
+   lightness   print lightness
+   luminance   print luminance
+   contratio   print contrast ratio
+   setr        set red
+   setg        set green
+   setb        set blue
+   seth        set hue
+   sets        set saturation
+   setl        set lightness
+   lighten     lighten color
+   darken      darken color
+   saturate    saturate color
+   desaturate  desaturate color
+   invert      invert color
+   mix         mix colors
+   grad        make gradient colors
+   darkgrad    make dark gradient colors
+   lightgrad   make light gradient colors
 ```
