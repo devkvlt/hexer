@@ -2,51 +2,64 @@
 
 ![Go version](https://img.shields.io/github/go-mod/go-version/devkvlt/hexer)
 [![Go Report Card](https://goreportcard.com/badge/github.com/devkvlt/hexer)](https://goreportcard.com/report/github.com/devkvlt/hexer)
-![Build](https://img.shields.io/github/workflow/status/devkvlt/hexer/build?label=build)
-![Tests](https://img.shields.io/github/workflow/status/devkvlt/hexer/test?label=tests)
+![Build](https://img.shields.io/github/actions/workflow/status/devkvlt/hexer/build.yml?branch=main&label=build)
+![Tests](https://img.shields.io/github/actions/workflow/status/devkvlt/hexer/test.yml?branch=main&label=tests)
 [![Coverage](https://coveralls.io/repos/github/devkvlt/hexer/badge.svg)](https://coveralls.io/github/devkvlt/hexer)
 ![License](https://img.shields.io/github/license/devkvlt/hexer)
 
-A command line tool to inspect and manipulate hex colors 🎨 with a simple and straightforward API.
+A command line tool and Go library to inspect and manipulate hex colors.
 
 ## Installation
 
 ```bash
-go install github.com/devkvlt/hexer@latest
+go install github.com/devkvlt/cmd/hexer@latest
 ```
 
 ## Usage
 
+Run `hexer` or `hexer help` to get a list of available commands.
+Run `hexer help <cmd>` to get detailed help about the command `<cmd>`
+Here are some examples of usage:
+
+```bash
+# Mix red and green
+hexer mix "#ff0000" "#008000"
+
+# Darken red by 10
+hexer darken "#ff0000" 10
+
+# Get the contrast ratio between red and green
+hexer contratio "#ff0000" "#008000"
+
+# Make 5 colors representing gradient colors between red and green
+hexer grad "#ff0000" "#008000" 5
 ```
-USAGE:
-   hexer  command [command options] [arguments...]
 
-DESCRIPTION:
-   Hexer is a command line tool that inspects and manipulates hex colors. All input colors must be in long hex format (6 hex digits prefixed with #.)
+## Usage as a library
 
-COMMANDS:
-   help        show help
-   red         print red
-   green       print green
-   blue        print blue
-   hue         print hue
-   saturation  print saturation
-   lightness   print lightness
-   luminance   print luminance
-   contratio   print contrast ratio
-   setr        set red
-   setg        set green
-   setb        set blue
-   seth        set hue
-   sets        set saturation
-   setl        set lightness
-   lighten     lighten color
-   darken      darken color
-   saturate    saturate color
-   desaturate  desaturate color
-   invert      invert color
-   mix         mix colors
-   grad        make gradient colors
-   darkgrad    make dark gradient colors
-   lightgrad   make light gradient colors
+```bash
+go get github.com/devkvlt/hexer
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/devkvlt/hexer"
+)
+
+func main() {
+	red := "#ff0000"
+	green := "#008000"
+
+	mix, err := hexer.Mix(red, green, 0.3)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(mix)
+}
 ```
