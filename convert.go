@@ -1,4 +1,4 @@
-package main
+package hexer
 
 import (
 	"errors"
@@ -8,6 +8,7 @@ import (
 )
 
 type rgb struct{ r, g, b float64 }
+
 type hsl struct{ h, s, l float64 }
 
 func rgb2hex(c rgb) string {

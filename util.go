@@ -1,4 +1,4 @@
-package main
+package hexer
 
 import (
 	"math"
@@ -11,7 +11,7 @@ func min(nums ...float64) float64 {
 			m = v
 		}
 	}
-	return float64(m)
+	return m
 }
 
 func max(nums ...float64) float64 {
@@ -21,7 +21,7 @@ func max(nums ...float64) float64 {
 			m = v
 		}
 	}
-	return float64(m)
+	return m
 }
 
 func rDist(c1, c2 rgb) float64 { return math.Abs(c1.r - c2.r) }

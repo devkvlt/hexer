@@ -1,4 +1,4 @@
-package main
+package hexer
 
 import (
 	"math"
@@ -22,46 +22,46 @@ var getTestCases = []struct {
 	{"test 3: bad input", "#ACE8", 0, 0, 0, 0, 0, 0, true},
 }
 
-func Test_getRed(t *testing.T) {
+func Test_Red(t *testing.T) {
 	for _, tt := range getTestCases {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getRed(tt.hex)
+			got, err := Red(tt.hex)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("getRed() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Red() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if math.Abs(got-tt.r) > 0.5 {
-				t.Errorf("getRed() = %v, want %v", got, tt.r)
+				t.Errorf("Red() = %v, want %v", got, tt.r)
 			}
 		})
 	}
 }
 
-func Test_getGreen(t *testing.T) {
+func Test_Green(t *testing.T) {
 	for _, tt := range getTestCases {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getGreen(tt.hex)
+			got, err := Green(tt.hex)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("getRed() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Green() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if math.Abs(got-tt.g) > 0.5 {
-				t.Errorf("getRed() = %v, want %v", got, tt.g)
+				t.Errorf("Green() = %v, want %v", got, tt.g)
 			}
 		})
 	}
 }
 
-func Test_getBlue(t *testing.T) {
+func Test_Blue(t *testing.T) {
 	for _, tt := range getTestCases {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getBlue(tt.hex)
+			got, err := Blue(tt.hex)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("getBlue() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Blue() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if math.Abs(got-tt.b) > 0.5 {
-				t.Errorf("getBlue() = %v, want %v", got, tt.b)
+				t.Errorf("Blue() = %v, want %v", got, tt.b)
 			}
 		})
 	}
@@ -70,7 +70,7 @@ func Test_getBlue(t *testing.T) {
 func Test_getHue(t *testing.T) {
 	for _, tt := range getTestCases {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getHue(tt.hex)
+			got, err := Hue(tt.hex)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("getHue() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -82,31 +82,31 @@ func Test_getHue(t *testing.T) {
 	}
 }
 
-func Test_getSaturation(t *testing.T) {
+func Test_Saturation(t *testing.T) {
 	for _, tt := range getTestCases {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getSaturation(tt.hex)
+			got, err := Saturation(tt.hex)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("getSaturation() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Saturation() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if math.Abs(got-tt.s) > 1 {
-				t.Errorf("getSaturation() = %v, want %v", got, tt.s)
+				t.Errorf("Saturation() = %v, want %v", got, tt.s)
 			}
 		})
 	}
 }
 
-func Test_getLightness(t *testing.T) {
+func Test_Lightness(t *testing.T) {
 	for _, tt := range getTestCases {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getLightness(tt.hex)
+			got, err := Lightness(tt.hex)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("getLightness() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Lightness() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if math.Abs(got-tt.l) > 1 {
-				t.Errorf("getLightness() = %v, want %v", got, tt.l)
+				t.Errorf("Lightness() = %v, want %v", got, tt.l)
 			}
 		})
 	}
@@ -126,7 +126,7 @@ func Test_setRed(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setRed(tt.hex, tt.r)
+			got, err := SetRed(tt.hex, tt.r)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("setRed() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -152,7 +152,7 @@ func Test_setGreen(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setGreen(tt.hex, tt.r)
+			got, err := SetGreen(tt.hex, tt.r)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("setGreen() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -163,6 +163,7 @@ func Test_setGreen(t *testing.T) {
 		})
 	}
 }
+
 func Test_setBlue(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -177,7 +178,7 @@ func Test_setBlue(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setBlue(tt.hex, tt.r)
+			got, err := SetBlue(tt.hex, tt.r)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("setBlue() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -204,7 +205,7 @@ func Test_setHue(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setHue(tt.hex, tt.h)
+			got, err := SetHue(tt.hex, tt.h)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("setHue() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -231,7 +232,7 @@ func Test_setSaturation(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setSaturation(tt.hex, tt.h)
+			got, err := SetSaturation(tt.hex, tt.h)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("setSaturation() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -258,7 +259,7 @@ func Test_setLightness(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := setLightness(tt.hex, tt.h)
+			got, err := SetLightness(tt.hex, tt.h)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("setLightness() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -285,7 +286,7 @@ func Test_lighten(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := lighten(tt.hex, tt.dl)
+			got, err := Lighten(tt.hex, tt.dl)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("lighten() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -312,7 +313,7 @@ func Test_darken(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := darken(tt.hex, tt.dl)
+			got, err := Darken(tt.hex, tt.dl)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("darken() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -339,7 +340,7 @@ func Test_saturate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := saturate(tt.hex, tt.dl)
+			got, err := Saturate(tt.hex, tt.dl)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("saturate() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -366,7 +367,7 @@ func Test_unsaturate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := unsaturate(tt.hex, tt.dl)
+			got, err := Desaturate(tt.hex, tt.dl)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("unsaturate() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -393,7 +394,7 @@ func Test_mix(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := mix(tt.c1, tt.c2, tt.w)
+			got, err := Mix(tt.c1, tt.c2, tt.w)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("mix() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -417,7 +418,7 @@ func Test_mixPalette(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := mixPalette(tt.c1, tt.c2, tt.n)
+			got, err := MixPalette(tt.c1, tt.c2, tt.n)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("mixPalette() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -441,7 +442,7 @@ func Test_darkPalette(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := darkPalette(tt.c, tt.n)
+			got, err := DarkPalette(tt.c, tt.n)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("darkPalette() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -465,7 +466,7 @@ func Test_lightPalette(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := lightPalette(tt.c, tt.n)
+			got, err := LightPalette(tt.c, tt.n)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("lightPalette() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -492,7 +493,7 @@ func Test_invert(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := invert(tt.hex)
+			got, err := Invert(tt.hex)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("invert() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -518,7 +519,7 @@ func Test_contrastRatio(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := contrastRatio(tt.c1, tt.c2)
+			got, err := ContrastRatio(tt.c1, tt.c2)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("contrastRatio() error = %v, wantErr %v", err, tt.wantErr)
 				return

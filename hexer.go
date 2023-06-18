@@ -1,16 +1,16 @@
 // This source file contains the core functions behind hexer. All input and
 // output colors are in the hex format.
 
-package main
+package hexer
 
 import (
 	"errors"
 	"math"
 )
 
-// luminance returns the relative luminance of a color.
+// Luminance returns the relative Luminance of a color.
 // https://en.wikipedia.org/wiki/Relative_luminance
-func luminance(c string) (float64, error) {
+func Luminance(c string) (float64, error) {
 	rgb, err := hex2rgb(c)
 	if err != nil {
 		return 0, err
@@ -27,13 +27,13 @@ func luminance(c string) (float64, error) {
 	return 0.2126*f(vr) + 0.7152*f(vg) + 0.0722*f(vb), nil
 }
 
-// contrastRatio returns the CR of 2 colors.
-func contrastRatio(c1, c2 string) (float64, error) {
-	l1, err := luminance(c1)
+// ContrastRatio returns the CR of 2 colors.
+func ContrastRatio(c1, c2 string) (float64, error) {
+	l1, err := Luminance(c1)
 	if err != nil {
 		return 0, err
 	}
-	l2, err := luminance(c2)
+	l2, err := Luminance(c2)
 	if err != nil {
 		return 0, err
 	}
@@ -43,8 +43,8 @@ func contrastRatio(c1, c2 string) (float64, error) {
 	return (l2 + 0.05) / (l1 + 0.05), nil
 }
 
-// invert returns the inverse of a color and an error.
-func invert(hex string) (string, error) {
+// Invert returns the inverse of a color and an error.
+func Invert(hex string) (string, error) {
 	c, err := hex2rgb(hex)
 	if err != nil {
 		return "", err
@@ -55,45 +55,45 @@ func invert(hex string) (string, error) {
 	return rgb2hex(c), nil
 }
 
-// getRed returns the red channel of a color and an error.
-func getRed(hex string) (float64, error) {
+// Red returns the red channel of a color and an error.
+func Red(hex string) (float64, error) {
 	rgb, err := hex2rgb(hex)
 	return rgb.r, err
 }
 
-// getGreen returns the green channel of a color and an error.
-func getGreen(hex string) (float64, error) {
+// Green returns the green channel of a color and an error.
+func Green(hex string) (float64, error) {
 	rgb, err := hex2rgb(hex)
 	return rgb.g, err
 }
 
-// getBlue returns the blue channel of a color and an error.
-func getBlue(hex string) (float64, error) {
+// Blue returns the blue channel of a color and an error.
+func Blue(hex string) (float64, error) {
 	rgb, err := hex2rgb(hex)
 	return rgb.b, err
 }
 
-// getHue returns the hue channel of a color and an error.
-func getHue(hex string) (float64, error) {
+// Hue returns the hue channel of a color and an error.
+func Hue(hex string) (float64, error) {
 	hsl, err := hex2hsl(hex)
 	return hsl.h, err
 }
 
-// getSaturation returns the saturation channel of a color and an error.
-func getSaturation(hex string) (float64, error) {
+// Saturation returns the saturation channel of a color and an error.
+func Saturation(hex string) (float64, error) {
 	hsl, err := hex2hsl(hex)
 	return hsl.s, err
 }
 
-// getLightness returns the lightness channel of a color and an error.
-func getLightness(hex string) (float64, error) {
+// Lightness returns the lightness channel of a color and an error.
+func Lightness(hex string) (float64, error) {
 	hsl, err := hex2hsl(hex)
 	return hsl.l, err
 }
 
-// setRed sets the red channel of a color to the provided value and returns the
+// SetRed sets the red channel of a color to the provided value and returns the
 // result and an error.
-func setRed(hex string, r float64) (string, error) {
+func SetRed(hex string, r float64) (string, error) {
 	rgb, err := hex2rgb(hex)
 	if err != nil {
 		return "", err
@@ -105,9 +105,9 @@ func setRed(hex string, r float64) (string, error) {
 	return rgb2hex(rgb), nil
 }
 
-// setGreen sets the green channel of a color to the provided value and returns
+// SetGreen sets the green channel of a color to the provided value and returns
 // the result and an error.
-func setGreen(hex string, g float64) (string, error) {
+func SetGreen(hex string, g float64) (string, error) {
 	rgb, err := hex2rgb(hex)
 	if err != nil {
 		return "", err
@@ -119,9 +119,9 @@ func setGreen(hex string, g float64) (string, error) {
 	return rgb2hex(rgb), nil
 }
 
-// setBlue sets the blue channel of a color to the provided value and returns
+// SetBlue sets the blue channel of a color to the provided value and returns
 // the result and an error.
-func setBlue(hex string, b float64) (string, error) {
+func SetBlue(hex string, b float64) (string, error) {
 	rgb, err := hex2rgb(hex)
 	if err != nil {
 		return "", err
@@ -133,9 +133,9 @@ func setBlue(hex string, b float64) (string, error) {
 	return rgb2hex(rgb), nil
 }
 
-// setHue sets the hue channel of a color to the provided value and returns the
+// SetHue sets the hue channel of a color to the provided value and returns the
 // result and an error.
-func setHue(hex string, h float64) (string, error) {
+func SetHue(hex string, h float64) (string, error) {
 	hsl, err := hex2hsl(hex)
 	if err != nil {
 		return "", err
@@ -147,9 +147,9 @@ func setHue(hex string, h float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// setSaturation sets the saturation channel of a color to the provided value
+// SetSaturation sets the saturation channel of a color to the provided value
 // and returns the result and an error.
-func setSaturation(hex string, s float64) (string, error) {
+func SetSaturation(hex string, s float64) (string, error) {
 	hsl, err := hex2hsl(hex)
 	if err != nil {
 		return "", err
@@ -161,9 +161,9 @@ func setSaturation(hex string, s float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// setLightness sets the lightness channel of a color to the provided value and
+// SetLightness sets the lightness channel of a color to the provided value and
 // returns the result and an error.
-func setLightness(hex string, l float64) (string, error) {
+func SetLightness(hex string, l float64) (string, error) {
 	hsl, err := hex2hsl(hex)
 	if err != nil {
 		return "", err
@@ -175,9 +175,9 @@ func setLightness(hex string, l float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// lighten lightens a color by adding the provided value to its lightness
+// Lighten lightens a color by adding the provided value to its lightness
 // channel and returns the result and an error.
-func lighten(hex string, a float64) (string, error) {
+func Lighten(hex string, a float64) (string, error) {
 	if a < 0 {
 		return "", errors.New("amount must be >= 0")
 	}
@@ -190,9 +190,9 @@ func lighten(hex string, a float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// darken darkens a color by subtracting the provided value from its lightness
+// Darken darkens a color by subtracting the provided value from its lightness
 // channel and returns the result and an error.
-func darken(hex string, a float64) (string, error) {
+func Darken(hex string, a float64) (string, error) {
 	if a < 0 {
 		return "", errors.New("amount must be >= 0")
 	}
@@ -205,9 +205,9 @@ func darken(hex string, a float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// saturate saturates a color by adding the provided value to its saturation
+// Saturate saturates a color by adding the provided value to its saturation
 // channel and returns the result and an error.
-func saturate(hex string, a float64) (string, error) {
+func Saturate(hex string, a float64) (string, error) {
 	if a < 0 {
 		return "", errors.New("amount must be >= 0")
 	}
@@ -220,9 +220,9 @@ func saturate(hex string, a float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// unsaturate unsaturates a color by subtracting the provided value from its
+// Desaturate unsaturates a color by subtracting the provided value from its
 // saturation channel and returns the result and an error.
-func unsaturate(hex string, a float64) (string, error) {
+func Desaturate(hex string, a float64) (string, error) {
 	if a < 0 {
 		return "", errors.New("amount must be >= 0")
 	}
@@ -235,9 +235,9 @@ func unsaturate(hex string, a float64) (string, error) {
 	return hsl2hex(hsl), nil
 }
 
-// mix mixes two colors using the given weight (of the first color) and returns
+// Mix mixes two colors using the given weight (of the first color) and returns
 // the result and an error.
-func mix(c1, c2 string, w float64) (string, error) {
+func Mix(c1, c2 string, w float64) (string, error) {
 	rgb1, err := hex2rgb(c1)
 	if err != nil {
 		return "", err
@@ -257,17 +257,17 @@ func mix(c1, c2 string, w float64) (string, error) {
 	return rgb2hex(rgbx), nil
 }
 
-// mixPalette makes a slice of colors representing a palette of n equally
+// MixPalette makes a slice of colors representing a palette of n equally
 // distanced colors between c1 and c2 (c1 and c2 included) and returns it with
 // an error.
-func mixPalette(c1, c2 string, n int) ([]string, error) {
+func MixPalette(c1, c2 string, n int) ([]string, error) {
 	if n < 2 {
 		return []string{}, errors.New("n must be >= 2")
 	}
 	palette := make([]string, n)
 	for i := 0; i < n; i++ {
 		w := float64(i) / float64(n-1)
-		mix, err := mix(c1, c2, w)
+		mix, err := Mix(c1, c2, w)
 		if err != nil {
 			return []string{}, err
 		}
@@ -276,8 +276,8 @@ func mixPalette(c1, c2 string, n int) ([]string, error) {
 	return palette, nil
 }
 
-// darkPalette
-func darkPalette(c string, n int) ([]string, error) {
+// DarkPalette
+func DarkPalette(c string, n int) ([]string, error) {
 	if n < 2 {
 		return []string{}, errors.New("n must be >= 2")
 	}
@@ -295,8 +295,8 @@ func darkPalette(c string, n int) ([]string, error) {
 	return palette, nil
 }
 
-// lightPalette
-func lightPalette(c string, n int) ([]string, error) {
+// LightPalette
+func LightPalette(c string, n int) ([]string, error) {
 	if n < 2 {
 		return []string{}, errors.New("n must be >= 2")
 	}
