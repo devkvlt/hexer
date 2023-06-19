@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/devkvlt/hexer)](https://goreportcard.com/report/github.com/devkvlt/hexer)
 ![Build](https://img.shields.io/github/actions/workflow/status/devkvlt/hexer/build.yml?branch=main&label=build)
 ![Tests](https://img.shields.io/github/actions/workflow/status/devkvlt/hexer/test.yml?branch=main&label=tests)
-[![Coverage](https://coveralls.io/repos/github/devkvlt/hexer/badge.svg)](https://coveralls.io/github/devkvlt/hexer)
+[![Coverage](https://github.com/devkvlt/hexer/wiki/coverage.svg)](https://raw.githack.com/wiki/devkvlt/hexer/coverage.html)
 ![License](https://img.shields.io/github/license/devkvlt/hexer)
 
 A command line tool and Go library to inspect and manipulate hex colors.
