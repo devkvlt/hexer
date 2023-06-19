@@ -52,5 +52,7 @@ var App = &cli.App{
 		&grad,
 		&lightgrad,
 		&darkgrad,
+
+		&adjust,
 	},
 }

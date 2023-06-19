@@ -313,3 +313,47 @@ func LightPalette(c string, n int) ([]string, error) {
 	}
 	return palette, nil
 }
+
+// AdjustToContrastRatio adjusts the lightness of the color c1 so that the
+// contrast ratio between c1 and c2 is as close as possible to the given
+// contrast ratio cr0.
+func AdjustToContrastRatio(c1, c2 string, cr0 float64) (string, error) {
+	const tolerance = 0.1
+	const adjustStep = 1
+
+	var adjust func(string, float64) (string, error)
+
+	if cr0 < 1 || cr0 > 21 {
+		return "", errors.New("invalid contrast ratio")
+	}
+
+	l1, err := Lightness(c1)
+	if err != nil {
+		return "", err
+	}
+
+	l2, err := Lightness(c2)
+	if err != nil {
+		return "", err
+	}
+
+	cr, _ := ContrastRatio(c1, c2)
+
+	if (l1 > l2 && cr > cr0) || (l1 <= l2 && cr <= cr0) {
+		adjust = Darken
+	} else {
+		adjust = Lighten
+	}
+
+	for math.Abs(cr0-cr) > tolerance {
+		// fmt.Println(c1, c2, cr) // DEBUG:
+		c1, _ = adjust(c1, adjustStep)
+		prevCR := cr
+		cr, _ = ContrastRatio(c1, c2)
+		if prevCR == cr {
+			break
+		}
+	}
+
+	return c1, nil
+}
