@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 type rgb struct{ r, g, b float64 }
@@ -20,12 +21,13 @@ func rgb2hex(c rgb) string {
 
 func hex2rgb(hex string) (rgb, error) {
 	err := errors.New("invalid hex color")
-	if len(hex) != 7 || hex[:1] != "#" {
+	hex = strings.TrimPrefix(hex, "#")
+	if len(hex) != 6 {
 		return rgb{}, err
 	}
-	r, errR := strconv.ParseUint(hex[1:3], 16, 64)
-	g, errG := strconv.ParseUint(hex[3:5], 16, 64)
-	b, errB := strconv.ParseUint(hex[5:], 16, 64)
+	r, errR := strconv.ParseUint(hex[:2], 16, 64)
+	g, errG := strconv.ParseUint(hex[2:4], 16, 64)
+	b, errB := strconv.ParseUint(hex[4:], 16, 64)
 	if errR != nil || errG != nil || errB != nil {
 		return rgb{}, err
 	}
