@@ -12,13 +12,15 @@ A command line tool and Go library to inspect and manipulate hex colors.
 ## Installation
 
 ```bash
-go install github.com/devkvlt/cmd/hexer@latest
+go install github.com/devkvlt/hexer/cmd/hexer@latest
 ```
 
 ## Usage
 
 Run `hexer` or `hexer help` to get a list of available commands.
-Run `hexer help <cmd>` to get detailed help about the command `<cmd>`
+
+Run `hexer help <cmd>` to get detailed help about the command `<cmd>`.
+
 Here are some examples of usage:
 
 ```bash
