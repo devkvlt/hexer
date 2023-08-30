@@ -4,26 +4,6 @@ import (
 	"math"
 )
 
-func min(nums ...float64) float64 {
-	m := nums[0]
-	for _, v := range nums {
-		if m > v {
-			m = v
-		}
-	}
-	return m
-}
-
-func max(nums ...float64) float64 {
-	m := nums[0]
-	for _, v := range nums {
-		if m < v {
-			m = v
-		}
-	}
-	return m
-}
-
 func rDist(c1, c2 rgb) float64 { return math.Abs(c1.r - c2.r) }
 func gDist(c1, c2 rgb) float64 { return math.Abs(c1.g - c2.g) }
 func bDist(c1, c2 rgb) float64 { return math.Abs(c1.b - c2.b) }
