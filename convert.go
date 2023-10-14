@@ -21,6 +21,10 @@ func rgb2hex(c rgb) string {
 
 func hex2rgb(hex string) (rgb, error) {
 	err := errors.New("invalid hex color")
+	webc, ok := WebColors[strings.ToLower(hex)]
+	if ok {
+		hex = webc
+	}
 	hex = strings.TrimPrefix(hex, "#")
 	if len(hex) != 6 {
 		return rgb{}, err
